@@ -4,3 +4,4 @@ __pycache__/
 *.log
 instance/
 config.env
+.env
