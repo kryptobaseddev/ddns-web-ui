@@ -39,11 +39,8 @@ def scheduled_ddns_updates():
                 print(f"Scheduled update for {config.provider.name}: {message}")
 
 def start_scheduler(app):
-    if not scheduler.running:
-        # Ensure the scheduler runs only in the master worker (pid 1) or main thread
-        if os.environ.get('RUN_MAIN') == 'true' or os.getpid() == 1:
-            scheduler.app = app  # Attach the Flask app context to the scheduler
-            scheduler.add_job(func=scheduled_ddns_updates, trigger="interval", minutes=1)
-            scheduler.start()
-            print("Scheduler started, checking DDNS updates every 1 minute.")
-            AppLog.create(level='INFO', message='Scheduler started, checking DDNS updates every 1 minute.', module='scheduler')
+    print("Starting the scheduler...")
+    scheduler.app = app
+    scheduler.add_job(func=scheduled_ddns_updates, trigger="interval", minutes=1)
+    scheduler.start()
+    print("Scheduler started successfully.")
