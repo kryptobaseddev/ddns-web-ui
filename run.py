@@ -40,4 +40,4 @@ if __name__ == '__main__':
         # Start the scheduler
         start_scheduler(app)  # Pass the Flask app to the scheduler
 
-    app.run(debug=True)  # Start the Flask app in development mode
+    app.run(host="0.0.0.0", port=5000, debug=True)  # Bind to 0.0.0.0 to make it accessible from outside
