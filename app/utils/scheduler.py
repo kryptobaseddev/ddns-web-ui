@@ -10,8 +10,8 @@ from app.models.logs import AppLog, DDNSUpdateLog
 scheduler = BackgroundScheduler()
 
 def scheduled_ddns_updates():
+    print("Executing scheduled job...")
     with scheduler.app.app_context():  # Use the app context
-        print("Running scheduled DDNS updates")
         configs = DDNSConfig.query.all()
         for config in configs:
             now = datetime.utcnow()
@@ -33,10 +33,10 @@ def scheduled_ddns_updates():
                 print(f"Scheduled update for {config.provider.name}: {message}")
 
 def start_scheduler(app):
-    print("Scheduler start function called")  # Add logging here
+    print("Starting scheduler...")
     scheduler.app = app  # Attach the Flask app context to the scheduler
     scheduler.add_job(func=scheduled_ddns_updates, trigger="interval", minutes=1)
-    print(f"Added job to scheduler: {scheduler.get_jobs()}")
+    print(f"Jobs: {scheduler.get_jobs()}")
     scheduler.start()
-    print("Scheduler started")  # Log scheduler startup
+    print("Scheduler started and running jobs.")
     AppLog.create(level='INFO', message='Scheduler started, checking DDNS updates every 1 minute.', module='scheduler')
