@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>DDNS Dashboard</h1>
+
+<!-- Scheduler Health Indicator -->
+<div id="scheduler-health" class="scheduler-indicator">
+    <strong>Scheduler Health: </strong>
+    <span id="scheduler-status-text">Checking...</span>
+    <div id="scheduler-light" class="traffic-light"></div>
+</div>
+
+<p><strong>Current External IP:</strong> {{ current_ip or 'Unable to fetch' }}</p>
+
+{% if configs %}
+    {% for config in configs %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ config.provider }}</h5>
+            <p><strong>Domain:</strong> {{ config.domain }}</p>
+            <p><strong>Last Update Attempt:</strong> {{ config.last_update_attempt or 'Never' }}</p>
+            <p><strong>Last Successful Update:</strong> {{ config.last_successful_update or 'Never' }}</p>
+            <p><strong>Current IP:</strong> {{ config.current_ip or 'Unknown' }}</p>
+            <p><strong>Update Interval:</strong> {{ config.update_interval }} minutes</p>
+            <p><strong>Next Update In:</strong> <span id="countdown-{{ config.id }}">Calculating...</span></p>
+            <form action="{{ url_for('ddns.manual_update', config_id=config.id) }}" method="post">
+                <button type="submit" class="btn btn-primary">Update Now</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No DDNS configurations found. <a href="{{ url_for('ddns.settings') }}">Add a new configuration</a>.</p>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fetch Scheduler Health Status
+        fetch("{{ url_for('scheduler.scheduler_status') }}")
+            .then(response => response.json())
+            .then(data => {
+                const schedulerText = document.getElementById('scheduler-status-text');
+                const schedulerLight = document.getElementById('scheduler-light');
+                
+                if (data.status === "Scheduler is running") {
+                    schedulerText.textContent = "Running";
+                    schedulerLight.style.backgroundColor = "green";
+                } else if (data.status === "Scheduler is not running") {
+                    schedulerText.textContent = "Stopped";
+                    schedulerLight.style.backgroundColor = "red";
+                } else {
+                    schedulerText.textContent = "Issue";
+                    schedulerLight.style.backgroundColor = "yellow";
+                }
+            })
+            .catch(error => {
+                const schedulerText = document.getElementById('scheduler-status-text');
+                const schedulerLight = document.getElementById('scheduler-light');
+                schedulerText.textContent = "Error";
+                schedulerLight.style.backgroundColor = "yellow";
+            });
+
+        // Update countdown timers
+        const configs = JSON.parse('{{ configs | tojson | safe }}');
+        configs.forEach(config => {
+            const countdownElem = document.getElementById(`countdown-${config.id}`);
+
+            if (config.last_update_attempt) {
+                const lastUpdate = new Date(config.last_update_attempt);
+                const updateInterval = config.update_interval * 60 * 1000;  // Convert minutes to milliseconds
+                const nextUpdate = lastUpdate.getTime() + updateInterval;
+
+                function updateCountdown() {
+                    const now = new Date().getTime();
+                    const distance = nextUpdate - now;
+
+                    if (distance <= 0) {
+                        countdownElem.innerHTML = "Update overdue!";
+                    } else {
+                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        countdownElem.innerHTML = `${minutes}m ${seconds}s`;
+                    }
+                }
+
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            } else {
+                countdownElem.innerHTML = "No last update found.";
+            }
+        });
+    });
+</script>
+
+<!-- Add some styles for the traffic light indicator -->
+<style>
+    .scheduler-indicator {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .traffic-light {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-left: 10px;
+        background-color: gray; /* Default color */
+    }
+</style>
+{% endblock %}

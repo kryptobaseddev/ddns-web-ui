@@ -1,0 +1,28 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+h1, h2 {
+    color: #007bff;
+}
+
+.log-container {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.log-container p {
+    margin-bottom: 5px;
+    font-family: monospace;
+}

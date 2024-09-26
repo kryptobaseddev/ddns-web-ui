@@ -1,0 +1,24 @@
+<!-- File: app/templates/admin/providers.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Manage DDNS Providers</h1>
+
+<a href="{{ url_for('admin.add_provider') }}" class="btn btn-primary mb-3">Add New Provider</a>
+
+{% if providers %}
+    <ul class="list-group">
+        {% for provider in providers %}
+        <li class="list-group-item">
+            <strong>{{ provider.name }}</strong> - {{ provider.update_url }}
+            <a href="{{ url_for('admin.edit_provider', provider_id=provider.id) }}" class="btn btn-sm btn-secondary">Edit</a>
+            <form action="{{ url_for('admin.delete_provider', provider_id=provider.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No providers found.</p>
+{% endif %}
+{% endblock %}

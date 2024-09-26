@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- TODO: Pull the heading from .env file -->
+<h1>Welcome to DDNS Manager</h1>
+<p>This application helps you manage your DDNS configurations and keep your dynamic DNS up to date.</p>
+{% if current_user.is_authenticated %}
+    <p>Go to your <a href="{{ url_for('ddns.dashboard') }}">Dashboard</a> to manage your DDNS configurations.</p>
+{% else %}
+    <p>Please <a href="{{ url_for('auth.login') }}">login</a> or <a href="{{ url_for('auth.register') }}">register</a> to get started.</p>
+{% endif %}
+{% endblock %}

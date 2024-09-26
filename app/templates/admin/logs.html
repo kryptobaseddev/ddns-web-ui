@@ -1,0 +1,26 @@
+<!-- File: app/templates/admin/logs.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Application Logs</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Level</th>
+            <th>Module</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.timestamp }}</td>
+            <td>{{ log.level }}</td>
+            <td>{{ log.module }}</td>
+            <td>{{ log.message }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

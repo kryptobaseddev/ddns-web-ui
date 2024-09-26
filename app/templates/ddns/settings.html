@@ -1,0 +1,82 @@
+<!-- File: app/templates/ddns/settings.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>DDNS Settings</h1>
+
+<h2>Current Configurations</h2>
+{% if configs %}
+    {% for config in configs %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ config.provider.name }}</h5>
+            <form method="POST" action="{{ url_for('ddns.settings') }}">
+                <input type="hidden" name="config_id" value="{{ config.id }}">
+                {% for field in config.provider.required_fields %}
+                <div class="form-group">
+                    <label for="{{ field.field }}">{{ field.label }}</label>
+                    <input type="text" class="form-control" id="{{ field.field }}" name="{{ field.field }}" value="{{ config.config_values[field.field] }}" required>
+                </div>
+                {% endfor %}
+                <div class="form-group">
+                    <label for="update_interval">Update Interval (minutes)</label>
+                    <input type="number" class="form-control" id="update_interval" name="update_interval" value="{{ config.update_interval }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" name="delete" value="{{ config.id }}" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No configurations found.</p>
+{% endif %}
+
+<h2>Add New Configuration</h2>
+<form method="POST" action="{{ url_for('ddns.settings') }}">
+    <div class="form-group">
+        <label for="provider">DDNS Provider</label>
+        <select class="form-control" id="provider" name="provider" required>
+            {% for provider in providers %}
+            <option value="{{ provider.id }}">{{ provider.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <!-- This section will be populated dynamically based on selected provider -->
+    <div id="dynamic-fields">
+        <!-- Placeholder for dynamic fields based on provider -->
+    </div>
+    <div class="form-group">
+        <label for="new_update_interval">Update Interval (minutes)</label>
+        <input type="number" class="form-control" id="new_update_interval" name="update_interval" value="5" required>
+    </div>
+    <button type="submit" class="btn btn-success">Add Configuration</button>
+</form>
+
+<script>
+    // Function to load provider fields based on selection
+    function loadProviderFields() {
+        var providerId = document.getElementById('provider').value;
+        fetch("{{ url_for('ddns.get_provider_fields') }}" + '?provider_id=' + providerId)
+            .then(response => response.json())
+            .then(data => {
+                var dynamicFields = document.getElementById('dynamic-fields');
+                dynamicFields.innerHTML = '';
+                data.required_fields.forEach(function(field) {
+                    dynamicFields.innerHTML += '<div class="form-group">' +
+                        '<label for="' + field.field + '">' + field.label + '</label>' +
+                        '<input type="text" class="form-control" id="' + field.field + '" name="' + field.field + '" required>' +
+                        '</div>';
+                });
+            });
+    }
+
+    // Event listener for when the provider dropdown changes
+    document.getElementById('provider').addEventListener('change', loadProviderFields);
+
+    // Automatically trigger provider change when the page loads to show fields for the first provider
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProviderFields();
+    });
+</script>
+{% endblock %}

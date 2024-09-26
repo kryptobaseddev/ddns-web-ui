@@ -1,0 +1,23 @@
+<!-- File: app/templates/admin/add_provider.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Add New DDNS Provider</h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="name">Provider Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+        <label for="update_url">Update URL</label>
+        <input type="text" class="form-control" id="update_url" name="update_url" required>
+    </div>
+    <div class="form-group">
+        <label for="required_fields">Required Fields</label>
+        <input type="text" class="form-control" id="required_fields" name="required_fields[]" placeholder="Enter required fields separated by commas" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Provider</button>
+    <a href="{{ url_for('admin.manage_providers') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,12 @@
+[
+    {
+        "name": "DuckDNS",
+        "update_url": "https://www.duckdns.org/update",
+        "required_fields": [{"field": "domain", "label": "Domain"}, {"field": "token", "label": "Token"}]
+    },
+    {
+        "name": "No-IP",
+        "update_url": "https://dynupdate.no-ip.com/nic/update",
+        "required_fields": [{"field": "hostname", "label": "Hostname"}, {"field": "username", "label": "Username"}, {"field": "password", "label": "Password"}]
+    }
+]

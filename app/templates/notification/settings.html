@@ -1,0 +1,47 @@
+<!-- File: app/templates/notification/settings.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Global Notification Settings</h2>
+<form method="POST">
+    <h3>Email (SMTP) Settings</h3>
+    <div class="form-group">
+        <label for="smtp_server">SMTP Server</label>
+        <input type="text" class="form-control" id="smtp_server" name="smtp_server" value="{{ settings.smtp_server or '' }}">
+    </div>
+    <div class="form-group">
+        <label for="smtp_port">SMTP Port</label>
+        <input type="number" class="form-control" id="smtp_port" name="smtp_port" value="{{ settings.smtp_port or 587 }}">
+    </div>
+    <div class="form-group">
+        <label for="smtp_username">SMTP Username</label>
+        <input type="text" class="form-control" id="smtp_username" name="smtp_username" value="{{ settings.smtp_username or '' }}">
+    </div>
+    <div class="form-group">
+        <label for="smtp_password">SMTP Password</label>
+        <input type="password" class="form-control" id="smtp_password" name="smtp_password" value="{{ settings.smtp_password or '' }}">
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="smtp_use_tls" name="smtp_use_tls" {% if settings.smtp_use_tls %}checked{% endif %}>
+        <label class="form-check-label" for="smtp_use_tls">Use TLS</label>
+    </div>
+    <div class="form-group">
+        <label for="smtp_from_email">From Email</label>
+        <input type="email" class="form-control" id="smtp_from_email" name="smtp_from_email" value="{{ settings.smtp_from_email or '' }}">
+    </div>
+
+    <h3>SMS Settings (Placeholder)</h3>
+    <div class="form-group">
+        <label for="sms_api_key">SMS API Key</label>
+        <input type="text" class="form-control" id="sms_api_key" name="sms_api_key" value="{{ settings.sms_api_key or '' }}">
+    </div>
+
+    <h3>Push Notification Settings (Placeholder)</h3>
+    <div class="form-group">
+        <label for="push_api_key">Push API Key</label>
+        <input type="text" class="form-control" id="push_api_key" name="push_api_key" value="{{ settings.push_api_key or '' }}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Settings</button>
+</form>
+{% endblock %}

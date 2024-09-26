@@ -1,0 +1,88 @@
+├── __pycache__
+│  └── config.cpython-310.pyc
+├── .env
+├── .env.template
+├── .gitignore
+├── app
+│  ├── __init__.py
+│  ├── __pycache__
+│  │  └── __init__.cpython-310.pyc
+│  ├── models
+│  │  ├── __init__.py
+│  │  ├── __pycache__
+│  │  │  ├── __init__.cpython-310.pyc
+│  │  │  ├── ddns.cpython-310.pyc
+│  │  │  ├── logs.cpython-310.pyc
+│  │  │  ├── notification.cpython-310.pyc
+│  │  │  └── user.cpython-310.pyc
+│  │  ├── ddns.py
+│  │  ├── logs.py
+│  │  ├── notification.py
+│  │  └── user.py
+│  ├── routes
+│  │  ├── __init__.py
+│  │  ├── __pycache__
+│  │  │  ├── __init__.cpython-310.pyc
+│  │  │  ├── admin.cpython-310.pyc
+│  │  │  ├── auth.cpython-310.pyc
+│  │  │  ├── ddns.cpython-310.pyc
+│  │  │  ├── logs.cpython-310.pyc
+│  │  │  └── notification.cpython-310.pyc
+│  │  ├── admin.py
+│  │  ├── auth.py
+│  │  ├── ddns.py
+│  │  ├── logs.py
+│  │  └── notification.py
+│  ├── static
+│  │  ├── css
+│  │  │  └── style.css
+│  │  └── js
+│  │    └── main.js
+│  ├── templates
+│  │  ├── admin
+│  │  │  ├── add_provider.html
+│  │  │  ├── edit_provider.html
+│  │  │  ├── logs.html
+│  │  │  └── providers.html
+│  │  ├── auth
+│  │  │  ├── login.html
+│  │  │  └── register.html
+│  │  ├── base.html
+│  │  ├── ddns
+│  │  │  ├── backup.html
+│  │  │  ├── dashboard.html
+│  │  │  ├── logs.html
+│  │  │  └── settings.html
+│  │  ├── index.html
+│  │  └── notification
+│  │    ├── settings.html
+│  │    └── user_settings.html
+│  └── utils
+│    ├── __init__.py
+│    ├── __pycache__
+│    │  ├── __init__.cpython-310.pyc
+│    │  └── ddns_updater.cpython-310.pyc
+│    ├── ddns_updater copy.py
+│    ├── ddns_updater.py
+│    └── notification_sender.py
+├── approved_providers.json
+├── config.py
+├── instance
+│  └── app.db
+├── migrations
+│  ├── __pycache__
+│  │  └── env.cpython-310.pyc
+│  ├── alembic.ini
+│  ├── env.py
+│  ├── README
+│  ├── script.py.mako
+│  └── versions
+│    ├── __pycache__
+│    │  └── 93cd3262a5a4_add_user_id_to_ddnsconfig.cpython-310.pyc
+│    └── 93cd3262a5a4_add_user_id_to_ddnsconfig.py
+├── project.tree
+├── README.md
+├── requirements.txt
+├── response.txt
+├── run.py
+└── venv

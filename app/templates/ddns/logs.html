@@ -1,0 +1,26 @@
+<!-- File: app/templates/ddns/logs.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>DDNS Logs</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Success</th>
+            <th>Message</th>
+            <th>IP Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.timestamp }}</td>
+            <td>{{ 'Success' if log.success else 'Failed' }}</td>
+            <td>{{ log.message }}</td>
+            <td>{{ log.ip_address }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

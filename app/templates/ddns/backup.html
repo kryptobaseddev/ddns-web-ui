@@ -1,0 +1,32 @@
+<!-- File: app/templates/ddns/backup.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Backup and Restore</h1>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Backup Configuration</h5>
+                <form action="{{ url_for('backup') }}" method="post">
+                    <button type="submit" name="backup" class="btn btn-primary">Download Backup</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Restore Configuration</h5>
+                <form action="{{ url_for('backup') }}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="restore">Select backup file</label>
+                        <input type="file" class="form-control-file" id="restore" name="restore" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Restore</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
