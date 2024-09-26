@@ -32,11 +32,13 @@ def initialize_providers():
         print(f"Error loading providers: {e}")
         raise
 
-with app.app_context():
-    upgrade()  # Apply pending migrations
-    initialize_database()  # Initialize database
+if __name__ == '__main__':
+    with app.app_context():
+        upgrade()  # Apply pending migrations
+        initialize_database()  # Initialize database
+        
+        # Start the scheduler
+        start_scheduler(app)  # Pass the Flask app to the scheduler
 
-    # Start the scheduler outside the __main__ block
-    start_scheduler(app)  # Pass the Flask app to the scheduler
+    app.run(debug=True)  # Start the Flask app in development mode
 
-# No need for app.run() since Gunicorn handles running the server
