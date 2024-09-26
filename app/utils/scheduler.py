@@ -6,11 +6,10 @@ from datetime import datetime
 from app import db
 from app.models.logs import AppLog, DDNSUpdateLog
 
-# Initialize the scheduler globally
+# Initialize the scheduler
 scheduler = BackgroundScheduler()
 
 def scheduled_ddns_updates():
-    """Job to check DDNS configurations and update them if needed"""
     with scheduler.app.app_context():  # Use the app context
         configs = DDNSConfig.query.all()
         for config in configs:
@@ -27,17 +26,16 @@ def scheduled_ddns_updates():
                 DDNSUpdateLog.create(
                     ddns_config_id=config.id,
                     success=success,
-                    message=message + " (Triggered by scheduler)",
+                    message=message + f" (Triggered by scheduler)",
                     ip_address=ip
                 )
 
                 print(f"Scheduled update for {config.provider.name}: {message}")
 
 def start_scheduler(app):
-    """Attach the scheduler to the app and start it"""
-    if not scheduler.running:
-        scheduler.app = app  # Attach the Flask app context to the scheduler
-        scheduler.add_job(func=scheduled_ddns_updates, trigger="interval", minutes=1)
-        scheduler.start()
-        print("Scheduler started, checking DDNS updates every 1 minute.")
-        AppLog.create(level='INFO', message='Scheduler started, checking DDNS updates every 1 minute.', module='scheduler')
+    print("Scheduler start function called")  # Add logging here
+    scheduler.app = app  # Attach the Flask app context to the scheduler
+    scheduler.add_job(func=scheduled_ddns_updates, trigger="interval", minutes=1)
+    scheduler.start()
+    print("Scheduler started")  # Log scheduler startup
+    AppLog.create(level='INFO', message='Scheduler started, checking DDNS updates every 1 minute.', module='scheduler')
