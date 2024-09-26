@@ -13,7 +13,7 @@ def initialize_database():
             User.create_admin()  # Create an admin user if one does not exist
             initialize_providers()  # Initialize DDNS providers
         except Exception as e:
-            print(f"Error initializing the database: {e}")
+            print("Error initializing the database: {}".format(e))
             raise
 
 def initialize_providers():
@@ -24,12 +24,12 @@ def initialize_providers():
         for provider in providers:
             existing_provider = DDNSProvider.query.filter_by(name=provider['name']).first()
             if existing_provider:
-                print(f"Provider '{provider['name']}' already exists, skipping.")
+                print("Provider '{}' already exists, skipping.".format(provider['name']))
             else:
                 DDNSProvider.add_provider(provider['name'], provider['update_url'], provider['required_fields'])
-                print(f"Provider '{provider['name']}' added successfully.")
+                print("Provider '{}' added successfully.".format(provider['name']))
     except Exception as e:
-        print(f"Error loading providers: {e}")
+        print("Error loading providers: {}".format(e))
         raise
 
 if __name__ == '__main__':
@@ -41,4 +41,3 @@ if __name__ == '__main__':
         start_scheduler(app)  # Pass the Flask app to the scheduler
 
     app.run(debug=True)  # Start the Flask app in development mode
-
