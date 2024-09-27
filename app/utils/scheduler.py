@@ -9,7 +9,7 @@ import logging
 import os
 
 # Initialize the scheduler
-scheduler = BackgroundScheduler(daemon+True)
+scheduler = BackgroundScheduler(daemon=True)
 
 # Start Logging
 logging.basicConfig()
