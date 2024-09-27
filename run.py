@@ -32,12 +32,21 @@ def initialize_providers():
         print("Error loading providers: {}".format(e))
         raise
 
-if __name__ == '__main__':
-    with app.app_context():
-        upgrade()  # Apply pending migrations
-        initialize_database()  # Initialize database
+# if __name__ == '__main__':
+#     with app.app_context():
+#         upgrade()  # Apply pending migrations
+#         initialize_database()  # Initialize database
         
-        # Start the scheduler
-        start_scheduler(app)  # Pass the Flask app to the scheduler
+#         # Start the scheduler
+#         start_scheduler(app)  # Pass the Flask app to the scheduler
 
-    app.run(host="0.0.0.0", port=5000, debug=True)  # Bind to 0.0.0.0 to make it accessible from outside
+#     app.run(host="0.0.0.0", port=5000, debug=True)  # Bind to 0.0.0.0 to make it accessible from outside
+
+with app.app_context():
+    upgrade()  # Apply pending migrations
+    initialize_database()  # Initialize database
+
+    # Start the scheduler when app starts
+    start_scheduler(app)
+
+# No app.run() as Gunicorn handles starting the app
